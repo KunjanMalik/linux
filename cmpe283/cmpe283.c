@@ -237,10 +237,17 @@ detect_vmx_features(void)
 	get_secondary_procbased_availability();
 
 	/* Entry controls */
-	
+    	rdmsr(IA32_VMX_ENTRY_CTLS, lo, hi);
+   	pr_info("Entry Controls MSR: 0x%llx\n",
+        	(uint64_t)(lo | (uint64_t)hi << 32));
+    	report_capability(entry_cntrls, 9, lo, hi);
 
 
-	/* Exit controls */
+    	/* Exit controls */
+    	rdmsr(IA32_VMX_EXIT_CTLS, lo, hi);
+    	pr_info("Exit Controls MSR: 0x%llx\n",
+        	(uint64_t)(lo | (uint64_t)hi << 32));
+    	report_capability(exit_cntrls, 7, lo, hi);
 	
 
 }
