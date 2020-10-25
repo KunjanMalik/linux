@@ -44,9 +44,9 @@ struct capability_info entry_cntrls[12] =
 	{ 15, "Load IA32_EFER" },
 	{ 16, "Load IA32_BNDCFGS" },
 	{ 17, "Conceal VM entries from intel PT" },
-    { 18,"Load IA32_RTIT_CTL"},
-    { 20, "Load CET state"},
-    { 22, "Load PKRS"}
+    	{ 18,"Load IA32_RTIT_CTL"},
+    	{ 20, "Load CET state"},
+    	{ 22, "Load PKRS"}
 };
 
 
@@ -67,9 +67,9 @@ struct capability_info exit_cntrls[14] =
 	{ 22, "Save VMX-preemption timer value" },
 	{ 23, "Clear IA32_BNDCFGS" },
 	{ 24, "Conceal VM exits from Intel PT" },
-    { 25,"Clear IA32_RTIT_CTL"},
-    { 28, "Load CET state"},
-    { 29, "Load PKRS"}
+    	{ 25,"Clear IA32_RTIT_CTL"},
+    	{ 28, "Load CET state"},
+    	{ 29, "Load PKRS"}
 
 };
 
@@ -133,7 +133,7 @@ struct capability_info secondary_procbased[25] =
 	{ 22, "Mode-based execution control for EPT" },
 	{ 25, "Use TSC scaling" },
 	{ 26, "Enable user wait and pause"},
-    { 28, "Enable ENCLV exiting"}
+    	{ 28, "Enable ENCLV exiting"}
 };
 
 
