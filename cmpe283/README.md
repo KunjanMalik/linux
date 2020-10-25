@@ -6,7 +6,7 @@
 4. run below command to clone the repo:  
     git clone https://github.com/torvalds/linux
 5. change directory to linux and create sub-directory: cmpe283 and copy MakeFile to this sub-directory
-6. Copy the smaple cmpe283.c file and update this file with our code for below instructions:
+6. Copy the smaple cmpe283.c file and update this file with our code for below instructions:  
 IA32_VMX_PINBASED_CTLS  
 IA32_VMX_PROCBASED_CTLS  
 IA32_VMX_PROCBASED_CTLS2  
