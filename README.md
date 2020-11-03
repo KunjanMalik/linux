@@ -103,7 +103,7 @@ We checked at Host machine with “dmesg” command
   
 
 ## Questions
-1. For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched. (You may skip this question if you are doing the lab by yourself).  
+### 1. For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched. (You may skip this question if you are doing the lab by yourself).  
 
 We worked in a team of 2.    
 Shivam Shrivastav and Kunjan Malik    
@@ -112,10 +112,10 @@ First we built the solution separately without the atomic read to check if we ar
 We shared the load, where Kunjan worked on the total exits part in vmx.c and cpuid. Shivam worked on total cycles in cpuid.c and vmx.c. We then integrated our parts and worked together to build a complete solution.   
 After the successful results, we worked on handling concurrent exits in multi-VCPU VM . This was achieved using atomic read and atomic increment functionality.    With this, we built the complete solution and tested our output using the above mentioned test script.   
   
-2. Steps described in the readme.md file.  
-You can refer to the delta parts(code changes to achieve the requirement) in the github respective files.     
+### 2. Steps described in the readme.md file.  
+You can refer to the our code changes to achieve the requirement and follow the above steps.     
 
-3. Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? Approximately how many exits does a full VM boot entail?      
+### 3. Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? Approximately how many exits does a full VM boot entail?      
 
 It does not seem to be increasing at a stable rate. When we run a variety of VM instructions in our inner VM, say unauthorized file access, playing video on the VM or internet or other VM operations., more number of VM exits occur due to Page Fault, exceptions etc accordingly.   
 In our setup, approximately, 2325981 exits occur within 54520926306 cpu cycles after VM boot.   
