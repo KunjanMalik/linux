@@ -63,7 +63,7 @@ Our assignment requirement is to modify the CPUID emulation code in KVM to repor
 
 
 Modify the kernel code into two files over host(Ubuntu) machine at below location:  
-          ~linux/arch/x86/kvm/cupid.c 
+          ~linux/arch/x86/kvm/cupid.c   
           ~linux/arch/x86/kvm/vmx/vmx.c  
 We ran the following command in host machine under Linux directory:  
            -sudo rmmod kvm_intel 
@@ -73,7 +73,7 @@ We ran the following command in host machine under Linux directory:
            -sudo insmod arch/x86/kvm/kvm-intel.ko  
 
 We have start the guest or inner VM from virt manager  
-Create a shell test script file(test_script.sh) as below inside inner VM (once inner VM is up).   
+### Create a shell test script file(test_script.sh) as below inside inner VM (once inner VM is up).   
 
 #!/bin/bash  
 
@@ -118,7 +118,10 @@ We shared the load, where Kunjan worked on the total exits part in vmx.c and cpu
 After the successful results, we worked on handling concurrent exits in multi-VCPU VM . This was achieved using atomic read and atomic increment functionality.    With this, we built the complete solution and tested our output using the above mentioned test script.   
   
 ### 2. Steps described in the readme.md file.  
-You can refer to the our code changes to achieve the requirement and follow the above steps.     
+For our code changes, you can refer the following files: 
+ ~linux/arch/x86/kvm/cupid.c   
+ ~linux/arch/x86/kvm/vmx/vmx.c   
+To run the entre setup, please follow above steps and execute the test script code mentioned above test scriot section and follow the all the above steps.       
 
 ### 3. Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? Approximately how many exits does a full VM boot entail?      
 
