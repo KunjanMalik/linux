@@ -15,12 +15,14 @@ make oldconfig
 make && make modules && make install && make modules-install   
 Reboot  
 After Reboot, we faced below error and unable to see the upgraded kernel version (5.10)  
+![s1](https://user-images.githubusercontent.com/24988178/98042859-493bc880-1e4a-11eb-82df-c10cf0e00110.png)
 
 
 To fix the above error, we ran below commands and were able to build the kernel to 5.10 version.  
 
 Reboot -f   
 We selected the Generic code version from the available list, which was before reboot with the generic one select and hit enter.   
+![s2](https://user-images.githubusercontent.com/24988178/98042869-4d67e600-1e4a-11eb-8f74-3edc50180f36.png)
 
 We went linux source folder and followed below commands.  
 Sudo bash. 
@@ -29,6 +31,7 @@ update-grub
 Make  
 Reboot  
 Verified the version with command “uname -r” and Kernel is ready.  
+![s3](https://user-images.githubusercontent.com/24988178/98042870-4f31a980-1e4a-11eb-8a33-f7c989e057b3.png)
 
 
 ## Now install KVM QEMU
@@ -51,6 +54,8 @@ We need to install the Linux(ubuntu) OS over the hypervisor through virt manager
 Upload the iso image file under new VM.  
 Install the ubuntu and reboot.   
 We are able to login to our inner VM (ubuntu) as below:   
+![s4](https://user-images.githubusercontent.com/24988178/98042873-522c9a00-1e4a-11eb-93a4-202399c5dc1e.png)
+
 
 
 ## Requirment
