@@ -60,7 +60,12 @@ To run the entre setup, please follow above steps assignment 2 readme and next s
 
 3.	Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? Approximately how many exits does a full VM boot entail?  
 Answer: Exits seems o increase but it does not seem to be increasing at a stable rate. When we run a variety of VM instructions in our inner VM, say unauthorized file access, playing video on the VM or internet or running cupid in guest VM or other VM operations, more number of VM exits occur due to Page Fault, exceptions etc accordingly.
-In our setup, approximately, 866840 exits occured after VM boot.  
+In our setup, approximately, 866840 exits occured after VM boot.   
+
+
+4. Of the exit types defined in the SDM, which are the most frequent? Least?
+
+Answer: There are many exits increasing where 0 is the most frequent exit reason. Even 10 is another most frequent exit. Many of the exits have count as 0 which exit reason: 63 and 67. 
 
 
 
