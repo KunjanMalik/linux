@@ -35,6 +35,8 @@ Output(no ept(ept=1): Nested Paging):
   
     
 Output(ept=0 : Shadow Paging)  
+![test script ept 0](https://user-images.githubusercontent.com/24988178/102022090-77e28280-3daa-11eb-9247-4d88cd58617e.png)
+
   
   
 3. What did you learn from the count of exits? Was the count what you expected? If not, why not?  
