@@ -1127,5 +1127,4 @@ void inc_exit_counter(u32 exit_reason){
 EXPORT_SYMBOL(total_exits);
 EXPORT_SYMBOL(total_cycles_time);
 EXPORT_SYMBOL_GPL(inc_exit_counter);
-EXPORT_SYMBOL(exits_per_reason);
 EXPORT_SYMBOL_GPL(kvm_emulate_cpuid);
