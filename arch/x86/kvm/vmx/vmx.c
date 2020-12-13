@@ -66,7 +66,7 @@
 MODULE_AUTHOR("Qumranet");
 MODULE_LICENSE("GPL");
 
-//changes
+//changes for assignment 3
 extern atomic_t total_exits;
 extern atomic64_t total_cycles_time;
 void inc_exit_counter(u32 exit_reason); //util function from cpuid.c
