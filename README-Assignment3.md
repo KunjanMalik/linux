@@ -22,8 +22,8 @@ We started the guest or inner VM from virt manager and checked the dmesg command
 
 ## Create a shell test script file(test.c) as below inside inner VM (once inner VM is up).
 
-For the script we took reference from stackoverflow: https://stackoverflow.com/questions/21422433/how-does-the-linux-kernel-get-info-about-the-processors-and-the-cores  and build our test script with recurrsive function as below.  
-![Screenshot 2020-12-13 at 4 32 49 PM](https://user-images.githubusercontent.com/24988178/102010021-4e513900-3d61-11eb-94b2-d758be5f3587.png)  
+For the script we took reference from stackoverflow: https://stackoverflow.com/questions/21422433/how-does-the-linux-kernel-get-info-about-the-processors-and-the-cores  and build our test script with recurrsive function to print all exit reason's count as below.  
+![test script](https://user-images.githubusercontent.com/24988178/102020963-8af15480-3da2-11eb-82d3-034a1e3cdb3c.png) 
 
 
 We have checked the output of number of VM exit per reason and over inner VM as below by running our test script:
