@@ -66,7 +66,11 @@
 MODULE_AUTHOR("Qumranet");
 MODULE_LICENSE("GPL");
 
-
+//changes
+extern atomic_t total_exits;
+extern atomic64_t total_cycles_time;
+void inc_exit_counter(u32 exit_reason); //util function from cpuid.c
+//changes
 
 #ifdef MODULE
 static const struct x86_cpu_id vmx_cpu_id[] = {
@@ -117,9 +121,6 @@ module_param_named(pml, enable_pml, bool, S_IRUGO);
 
 static bool __read_mostly dump_invalid_vmcs = 0;
 module_param(dump_invalid_vmcs, bool, 0644);
-
-extern atomic_t total_exits;
-extern atomic64_t total_cycles_time;
 
 #define MSR_BITMAP_MODE_X2APIC		1
 #define MSR_BITMAP_MODE_X2APIC_APICV	2
@@ -189,8 +190,6 @@ module_param(pt_mode, int, S_IRUGO);
 static DEFINE_STATIC_KEY_FALSE(vmx_l1d_should_flush);
 static DEFINE_STATIC_KEY_FALSE(vmx_l1d_flush_cond);
 static DEFINE_MUTEX(vmx_l1d_flush_mutex);
-
-
 
 /* Storage for pre module init parameter parsing */
 static enum vmx_l1d_flush_state __read_mostly vmentry_l1d_flush_param = VMENTER_L1D_FLUSH_AUTO;
@@ -5958,24 +5957,21 @@ void dump_vmcs(void)
 		       vmcs_read16(VIRTUAL_PROCESSOR_ID));
 }
 
-
-
-void inc_exit_counter(u32 exit_reason); 
-
 /*
  * The guest has exited.  See if we can fix it or if we need userspace
  * assistance.
  */
 static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 {
-
 	struct vcpu_vmx *vmx = to_vmx(vcpu);
 	u32 exit_reason = vmx->exit_reason;
 	u32 vectoring_info = vmx->idt_vectoring_info;
-	u64 start_time;
-	u64 end_time;
+//begin
 	int exit_count = 0;
-
+	u64 start_timer;
+	u64 stop_timer;
+	u64 delta_time;
+//end
 	/*
 	 * Flush logged GPAs PML buffer, this will make dirty_bitmap more
 	 * updated. Another good is, in kvm_vm_ioctl_get_dirty_log, before
@@ -6077,10 +6073,9 @@ static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 		}
 	}
 
-
 	if (exit_fastpath != EXIT_FASTPATH_NONE)
 		return 1;
-		
+
 	if (exit_reason >= kvm_vmx_max_exit_handlers)
 		goto unexpected_vmexit;
 #ifdef CONFIG_RETPOLINE
@@ -6102,19 +6097,18 @@ static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 					 kvm_vmx_max_exit_handlers);
 	if (!kvm_vmx_exit_handlers[exit_reason])
 		goto unexpected_vmexit;
-	
-//changes for assignment
+//Begin
 	if (exit_reason < kvm_vmx_max_exit_handlers && kvm_vmx_exit_handlers[exit_reason]){
-	start_time = rdtsc();
-	exit_count = kvm_vmx_exit_handlers[exit_reason](vcpu);
-	end_time = rdtsc();
-	atomic64_add(end_time - start_time,&total_cycles_time);
-	atomic_inc(&total_exits);
-	inc_exit_counter(exit_reason);
-	return exit_count;
-	
+	    start_timer = rdtsc();
+	    exit_count = kvm_vmx_exit_handlers[exit_reason](vcpu);
+	    stop_timer = rdtsc();
+	    delta_time =  stop_timer - start_timer;
+	    atomic64_add(delta_time,&total_cycles_time);
+	    atomic_inc(&total_exits);
+	    inc_exit_counter(exit_reason); //called in cpuid.c to increment the current exit's count
+	    return exit_count;
 	}
-
+//End	
 	return kvm_vmx_exit_handlers[exit_reason](vcpu);
 
 unexpected_vmexit:
