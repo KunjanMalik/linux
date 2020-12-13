@@ -20,7 +20,7 @@ We ran the following command in host machine under Linux directory:
 
 We started the guest or inner VM from virt manager and checked the dmesg command in our outer VM.   
 
-## Create a shell test script file(test.c) as below inside inner VM (once inner VM is up).
+## Create a test script file(test_script.c) as below inside inner VM (once inner VM is up).
 
 For the script we took reference from stackoverflow: https://stackoverflow.com/questions/21422433/how-does-the-linux-kernel-get-info-about-the-processors-and-the-cores  and build our test script with recurrsive function to print all exit reason's count as below.  
 ![test script](https://user-images.githubusercontent.com/24988178/102020963-8af15480-3da2-11eb-82d3-034a1e3cdb3c.png) 
