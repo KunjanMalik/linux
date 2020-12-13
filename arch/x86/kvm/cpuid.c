@@ -1065,51 +1065,49 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu) {
   printk("Exit Reason for All(outer) : %d", (int) ecx);
   printk("Total Count for All(outer) : %d", (int) eax);
   eax = kvm_rax_read(vcpu);
+   switch (eax) {
+ case 0x4FFFFFFF:
+   eax = atomic_read( & total_exits);
+   ebx = ((atomic64_read( & total_cycles_time) >> 32));
+   ecx = ((atomic64_read( & total_cycles_time) & 0xFFFFFFFF));
+   printk("Exit Count : %u \n", eax); // testing eax resultant value in terminal
+   printk("EBX : %u \n", ebx); // testing ebx resultant value in terminal
+   printk("ECX : %u \n", ecx); // testing ecx resultant value in terminal
+   break;
 
-  if (eax == 0x4FFFFFFF) {
-    eax = atomic_read(&total_exits);
-    ebx = ((atomic64_read(&total_cycles_time) >> 32));
-    ecx = ((atomic64_read(&total_cycles_time) & 0xFFFFFFFF));
-    printk ("Exit Count : %u \n", eax);     				// testing eax resultant value in terminal
-    printk ("EBX : %u \n", ebx);     					// testing ebx resultant value in terminal
-    printk ("ECX : %u \n", ecx);     					// testing ecx resultant value in terminal
-  } else if (eax == 0x4FFFFFFE) {
-  
-  	  curr_count++;
-  	  printk("CPUID(0x4FFFFFFE), Total Exits: %d \n", curr_count);
-      eax = atomic_read(&total_exits);
-    
-	//Exit types not enabled in KVM
-    if (ecx < 0 || ecx > 68 || ecx == 4 || ecx == 5 || ecx == 6 || ecx == 11 || ecx == 17 || ecx == 66) {
-      kvm_rax_write(vcpu, 0);
-      kvm_rbx_write(vcpu, 0);
-      kvm_rcx_write(vcpu, 0);
-      kvm_rdx_write(vcpu, 0);
-      eax = atomic_read(&exits_per_reason[(int)ecx]);
-          printk("Exit reason (not enabled in KVM): %d , Exit Count : %d\n", (int)ecx,(int)eax);
+ case 0x4FFFFFFE:
+   curr_count++;
+   printk("CPUID(0x4FFFFFFE), Total Exits: %d \n", curr_count);
+   eax = atomic_read( & total_exits);
 
+   //Exit types not enabled in KVM
+   if (ecx < 0 || ecx > 68 || ecx == 4 || ecx == 5 || ecx == 6 || ecx == 11 || ecx == 17 || ecx == 66) {
+     kvm_rax_write(vcpu, 0);
+     kvm_rbx_write(vcpu, 0);
+     kvm_rcx_write(vcpu, 0);
+     kvm_rdx_write(vcpu, 0);
+     eax = atomic_read( & exits_per_reason[(int) ecx]);
+     printk("Exit reason (not enabled in KVM): %d , Exit Count : %d\n", (int) ecx, (int) eax);
 
-    } else if(ecx == 35 || ecx == 38 || ecx == 42 || ecx == 65 ){
-    	//Exit types not enabled in SDM
-      kvm_rax_write(vcpu, 0);
-      kvm_rbx_write(vcpu, 0);
-      kvm_rcx_write(vcpu, 0);
-      kvm_rdx_write(vcpu, 0xFFFFFFFF);
-      eax = atomic_read(&exits_per_reason[(int)ecx]);
-      printk("Exit reason (not enabled in SDM): %d , Exit Count : %d\n",(int)ecx,(int) eax);
+   } else if (ecx == 35 || ecx == 38 || ecx == 42 || ecx == 65) {
+     //Exit types not enabled in SDM
+     kvm_rax_write(vcpu, 0);
+     kvm_rbx_write(vcpu, 0);
+     kvm_rcx_write(vcpu, 0);
+     kvm_rdx_write(vcpu, 0xFFFFFFFF);
+     eax = atomic_read( & exits_per_reason[(int) ecx]);
+     printk("Exit reason (not enabled in SDM): %d , Exit Count : %d\n", (int) ecx, (int) eax);
+   } else {
+     //For Exit Types Enabled	
+     kvm_rax_write(vcpu, atomic_read( & exits_per_reason[(int) ecx]));
+     eax = atomic_read( & exits_per_reason[(int) ecx]);
+     printk("CPUID(0x4FFFFFFE), Exit Number: %d , Exit Count : %d\n", (int) ecx, (int) eax);
+   }
+   break;
+ default:
+   kvm_cpuid(vcpu, & eax, & ebx, & ecx, & edx, true);
+ }
 
-    } else{
-      //For Exit Types Enabled	
-   	 kvm_rax_write(vcpu, atomic_read(&exits_per_reason[(int)ecx]));
-     eax = atomic_read(&exits_per_reason[(int)ecx]);
-     printk("CPUID(0x4FFFFFFE), Exit Number: %d , Exit Count : %d\n", (int)ecx,(int)eax);
-    }
-    
-    
-  }
-else {
-  kvm_cpuid(vcpu, & eax, & ebx, & ecx, & edx, true);
-}
 kvm_rax_write(vcpu, eax);
 kvm_rbx_write(vcpu, ebx);
 kvm_rcx_write(vcpu, ecx);
