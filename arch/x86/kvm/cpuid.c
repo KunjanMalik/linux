@@ -1122,7 +1122,7 @@ void inc_exit_counter(u32 exit_reason){
   if(exit_reason >= 0 && exit_reason < 69){    
     atomic_inc(&exits_per_reason[(int)exit_reason]);
     eax = atomic_read(&exits_per_reason[(int)exit_reason]);
-    //printk("Incremented Exit Reason: %d to %d \n",(int)exit_reason, (int)eax);
+    //printk("Incremented Exit Reason: %d to %d \n",(int)exit_reason, (int)eax);  //was added for debugging
     }
 }
 
