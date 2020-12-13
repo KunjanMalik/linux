@@ -24,22 +24,18 @@
 #include "trace.h"
 #include "pmu.h"
 
+//changes
+static atomic_t total_exits;
+static atomic64_t total_cycles_time;
+static atomic_t exits_per_reason[69];
+int curr_count = 0;
+
 /*
  * Unlike "struct cpuinfo_x86.x86_capability", kvm_cpu_caps doesn't need to be
  * aligned to sizeof(unsigned long) because it's not accessed via bitops.
  */
 u32 kvm_cpu_caps[NCAPINTS] __read_mostly;
 EXPORT_SYMBOL_GPL(kvm_cpu_caps);
-//Start Changes for assignment3
-static atomic_t exits_per_reason[69];
-
-//start changes for assignment 2
-static atomic_t total_exits;
-static atomic64_t total_cycles_time;
-int curr_count=0;
-
-
-//end changes for assignment 2
 
 static u32 xstate_required_size(u64 xstate_bv, bool compacted)
 {
@@ -1052,79 +1048,84 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
 }
 EXPORT_SYMBOL_GPL(kvm_cpuid);
 
-int kvm_emulate_cpuid(struct kvm_vcpu *vcpu) {
-  u32 eax, ebx, ecx, edx;
-  
+int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
+{
+	u32 eax, ebx, ecx, edx;
 
-  if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
-    return 1; 
-    
-  eax = atomic_read(&total_exits);
-  ecx = kvm_rcx_read(vcpu);
+	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
+		return 1;
 
-  printk("Exit Reason for All(outer) : %d", (int) ecx);
-  printk("Total Count for All(outer) : %d", (int) eax);
-  eax = kvm_rax_read(vcpu);
-   switch (eax) {
- case 0x4FFFFFFF:
-   eax = atomic_read( & total_exits);
-   ebx = ((atomic64_read( & total_cycles_time) >> 32));
-   ecx = ((atomic64_read( & total_cycles_time) & 0xFFFFFFFF));
-   printk("Exit Count : %u \n", eax); // testing eax resultant value in terminal
-   printk("EBX : %u \n", ebx); // testing ebx resultant value in terminal
-   printk("ECX : %u \n", ecx); // testing ecx resultant value in terminal
-   break;
+	eax = kvm_rax_read(vcpu);
+	ecx = kvm_rcx_read(vcpu);
+	//kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
+//changes
+       eax = atomic_read(&total_exits);
+       printk("Exit Reason for All(outer) : %d", (int) ecx);
+       printk("Total Count for All(outer) : %d", (int) eax);
+       eax = kvm_rax_read(vcpu);
+  	switch (eax)
+    	  {
+    	  case 0x4FFFFFFF:
+            eax = atomic_read(&total_exits);			          	// new values updated below
+            printk ("Exit Count : %u \n", eax);     				// testing eax resultant value in terminal
+            ebx = ((atomic64_read(&total_cycles_time) >> 32));	  	// Upper 32 bits
+            printk ("EBX : %u \n", ebx);     					// testing ebx resultant value in terminal
+            ecx = ((atomic64_read(&total_cycles_time) & 0xFFFFFFFF));	// Lower 32 bits
+            printk ("ECX : %u \n", ecx);     					// testing ecx resultant value in terminal
+            break;
+          case 0x4FFFFFFE:
+            curr_count++;
+  	        printk("CPUID(0x4FFFFFFE), Total Exits: %d \n", curr_count);
+      	    eax = atomic_read(&total_exits);
+            if (ecx < 0 || ecx > 68 || ecx == 4 || ecx == 5 || ecx == 6 || ecx == 11 || ecx == 17 || ecx == 66) {
+       
+      		kvm_rax_write(vcpu, 0);
+      		kvm_rbx_write(vcpu, 0);
+      		kvm_rcx_write(vcpu, 0);
+      		kvm_rdx_write(vcpu, 0);
+            printk("Exit reason (not enabled in KVM): %d , Exit Count : %d\n", (int) ecx, (int) eax);
 
- case 0x4FFFFFFE:
-   curr_count++;
-   printk("CPUID(0x4FFFFFFE), Total Exits: %d \n", curr_count);
-   eax = atomic_read( & total_exits);
+    	    } else if(ecx == 35 || ecx == 38 || ecx == 42 || ecx == 65 ){
+      		//Exit types not enabled in APPENDIX C in SDM- Vol 3D C1
+      		kvm_rax_write(vcpu, 0);
+      		kvm_rbx_write(vcpu, 0);
+      		kvm_rcx_write(vcpu, 0);
+      		kvm_rdx_write(vcpu, 0xFFFFFFFF);
+            printk("Exit reason (not enabled in SDM): %d , Exit Count : %d\n", (int) ecx, (int) eax);
 
-   //Exit types not enabled in KVM
-   if (ecx < 0 || ecx > 68 || ecx == 4 || ecx == 5 || ecx == 6 || ecx == 11 || ecx == 17 || ecx == 66) {
-     kvm_rax_write(vcpu, 0);
-     kvm_rbx_write(vcpu, 0);
-     kvm_rcx_write(vcpu, 0);
-     kvm_rdx_write(vcpu, 0);
-     eax = atomic_read( & exits_per_reason[(int) ecx]);
-     printk("Exit reason (not enabled in KVM): %d , Exit Count : %d\n", (int) ecx, (int) eax);
-
-   } else if (ecx == 35 || ecx == 38 || ecx == 42 || ecx == 65) {
-     //Exit types not enabled in SDM
-     kvm_rax_write(vcpu, 0);
-     kvm_rbx_write(vcpu, 0);
-     kvm_rcx_write(vcpu, 0);
-     kvm_rdx_write(vcpu, 0xFFFFFFFF);
-     eax = atomic_read( & exits_per_reason[(int) ecx]);
-     printk("Exit reason (not enabled in SDM): %d , Exit Count : %d\n", (int) ecx, (int) eax);
-   } else {
-     //For Exit Types Enabled	
-     kvm_rax_write(vcpu, atomic_read( & exits_per_reason[(int) ecx]));
-     eax = atomic_read( & exits_per_reason[(int) ecx]);
-     printk("CPUID(0x4FFFFFFE), Exit Number: %d , Exit Count : %d\n", (int) ecx, (int) eax);
-   }
-   break;
- default:
-   kvm_cpuid(vcpu, & eax, & ebx, & ecx, & edx, true);
- }
-
-kvm_rax_write(vcpu, eax);
-kvm_rbx_write(vcpu, ebx);
-kvm_rcx_write(vcpu, ecx);
-kvm_rdx_write(vcpu, edx);
-return kvm_skip_emulated_instruction(vcpu);
+    	    } else{
+      	    //For exit types enabled		
+   	 	        kvm_rax_write(vcpu, atomic_read(&exits_per_reason[(int)ecx]));
+      	        eax = atomic_read(&exits_per_reason[(int)ecx]);
+      	        printk("CPUID(0x4FFFFFFE), Exit Number: %d , Exit Count : %d\n", (int) ecx, (int) eax);
+    	    }
+    	    printk("EXIT_REASON: %d, ExitCount: %u\n", (int) ecx, eax);
+            break;
+            default:
+            // default case
+               kvm_cpuid (vcpu, &eax, &ebx, &ecx, &edx, true);
+         }
+        //update registers
+	kvm_rax_write(vcpu, eax);
+	kvm_rbx_write(vcpu, ebx);
+	kvm_rcx_write(vcpu, ecx);
+	kvm_rdx_write(vcpu, edx);
+	return kvm_skip_emulated_instruction(vcpu);
 }
 
+//new function addedd to increment the exit reason counter(called from vmx)
 void inc_exit_counter(u32 exit_reason){
-u32 eax;
-    if(exit_reason >= 0 && exit_reason < 69){    
-        atomic_inc(&exits_per_reason[(int)exit_reason]);
-        eax = atomic_read(&exits_per_reason[(int)exit_reason]);
-
+  u32 eax;
+  if(exit_reason >= 0 && exit_reason < 69){    
+    atomic_inc(&exits_per_reason[(int)exit_reason]);
+    eax = atomic_read(&exits_per_reason[(int)exit_reason]);
+    //printk("Incremented Exit Reason: %d to %d \n",(int)exit_reason, (int)eax);
     }
 }
 
-EXPORT_SYMBOL_GPL(kvm_emulate_cpuid);
-EXPORT_SYMBOL_GPL(inc_exit_counter);
+//changes
 EXPORT_SYMBOL(total_exits);
 EXPORT_SYMBOL(total_cycles_time);
+EXPORT_SYMBOL_GPL(inc_exit_counter);
+EXPORT_SYMBOL(exits_per_reason);
+EXPORT_SYMBOL_GPL(kvm_emulate_cpuid);
