@@ -26,7 +26,9 @@ For the script we took reference from stackoverflow: https://stackoverflow.com/q
 ![test script](https://user-images.githubusercontent.com/24988178/102020963-8af15480-3da2-11eb-82d3-034a1e3cdb3c.png) 
 
 
-We have checked the output of number of VM exit per reason and over inner VM as below by running our test script:
+We have checked the output of number of VM exit per reason and over inner VM as below by running our test script:  
+gcc test_script.c -o test_script  
+./test_script  
 
 ![test script output no ept](https://user-images.githubusercontent.com/24988178/102020723-081bca00-3da1-11eb-8798-bb5317e7c936.png)
 
