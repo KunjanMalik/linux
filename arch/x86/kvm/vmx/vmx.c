@@ -6105,7 +6105,7 @@ static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	    delta_time =  stop_timer - start_timer;
 	    atomic64_add(delta_time,&total_cycles_time);
 	    atomic_inc(&total_exits);
-	    inc_exit_counter(exit_reason); //called in cpuid.c to increment the current exit's count
+	    inc_exit_counter(exit_reason); //called in cpuid.c to increment the current exit's count. //done by kunjan, checked in by shivam
 	    return exit_count;
 	}
 //End	
