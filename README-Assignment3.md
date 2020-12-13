@@ -22,18 +22,20 @@ We started the guest or inner VM from virt manager and checked the dmesg command
 
 ## Create a shell test script file(test.c) as below inside inner VM (once inner VM is up).
 
-For the script we took reference from stackoverflow: https://stackoverflow.com/questions/21422433/how-does-the-linux-kernel-get-info-about-the-processors-and-the-cores  and build our test script as below.  
-  
-![Screenshot 2020-12-13 at 4 32 49 PM](https://user-images.githubusercontent.com/24988178/102010021-4e513900-3d61-11eb-94b2-d758be5f3587.png)
+For the script we took reference from stackoverflow: https://stackoverflow.com/questions/21422433/how-does-the-linux-kernel-get-info-about-the-processors-and-the-cores  and build our test script with recurrsive function as below.  
+![Screenshot 2020-12-13 at 4 32 49 PM](https://user-images.githubusercontent.com/24988178/102010021-4e513900-3d61-11eb-94b2-d758be5f3587.png)  
 
-We have checked the output of number of VM exit per reason and over inner VM as below:
+
+We have checked the output of number of VM exit per reason and over inner VM as below by running our test script:
+
+![test script output no ept](https://user-images.githubusercontent.com/24988178/102020723-081bca00-3da1-11eb-8798-bb5317e7c936.png)
 
   
 
 
 We checked at Host machine with “dmesg” command 
 
-
+![no ept dmesg screen shot](https://user-images.githubusercontent.com/24988178/102020634-61cfc480-3da0-11eb-8c66-dde1208826c3.png)
 
 # Questions
 
@@ -65,7 +67,7 @@ In our setup, approximately, 866840 exits occured after VM boot.
 
 4. Of the exit types defined in the SDM, which are the most frequent? Least?
 
-Answer: There are many exits increasing where 0 is the most frequent exit reason. Even 10 is another most frequent exit. Many of the exits have count as 0 which exit reason: 63 and 67. 
+Answer: There are many exits increasing where 48 is the most frequent exit reason. Even 10 and 30 exited second most frequent exit. Many of the exits have count as 0 like: Exit Reason 2, 3, 63, 64 and 67 etc. 
 
 
 
