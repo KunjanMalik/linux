@@ -24,7 +24,7 @@
 #include "trace.h"
 #include "pmu.h"
 
-//changes
+//changes for assignment 3 and 4
 static atomic_t total_exits;
 static atomic64_t total_cycles_time;
 static atomic_t exits_per_reason[69];
@@ -1078,6 +1078,7 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
   	        printk("CPUID(0x4FFFFFFE), Total Exits: %d \n", curr_count);
       	    eax = atomic_read(&total_exits);
             if (ecx < 0 || ecx > 68 || ecx == 4 || ecx == 5 || ecx == 6 || ecx == 11 || ecx == 17 || ecx == 66) {
+		//by kunjan
        
       		kvm_rax_write(vcpu, 0);
       		kvm_rbx_write(vcpu, 0);
@@ -1086,6 +1087,7 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
             printk("Exit reason (not enabled in KVM): %d , Exit Count : %d\n", (int) ecx, (int) eax);
 
     	    } else if(ecx == 35 || ecx == 38 || ecx == 42 || ecx == 65 ){
+		   //by shivam
       		//Exit types not enabled in APPENDIX C in SDM- Vol 3D C1
       		kvm_rax_write(vcpu, 0);
       		kvm_rbx_write(vcpu, 0);
@@ -1102,6 +1104,7 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
     	    printk("EXIT_REASON: %d, ExitCount: %u\n", (int) ecx, eax);
             break;
             default:
+	    //by kunjan		
             // default case
                kvm_cpuid (vcpu, &eax, &ebx, &ecx, &edx, true);
          }
