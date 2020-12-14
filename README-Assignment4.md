@@ -21,26 +21,26 @@ Output is shown below in questions.
   
 # Questions
 
-1. For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched. (You may skip this question if you are doing the lab by yourself).  
-Answer: We worked in a team of 2.  
-Shivam Shrivastav and Kunjan Malik.  
+**1. For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched. (You may skip this question if you are doing the lab by yourself).**  
+**Answer:** We worked in a team of 2
+**Shivam Shrivastav and Kunjan Malik**
 We both did the other assignments together and researched together about this assignment as well.  
 Since there was no code changes involved, we mostly did this assignment together over zoom call.
 Output without ept (default ept=1 nested paging) was taken by Kunjan and output for ept=0(shadow paging) for taken by Shivam).  
   
   
-2. Include a sample of your print of exit count output from dmesg from “with ept” and “without ept”.  
-Output(no ept(ept=1): Nested Paging):    
+**2. Include a sample of your print of exit count output from dmesg from “with ept” and “without ept”.**
+**Output(no ept(ept=1): Nested Paging):**   
 ![test script output no ept](https://user-images.githubusercontent.com/24988178/102020723-081bca00-3da1-11eb-8798-bb5317e7c936.png)  
   
     
-Output(ept=0 : Shadow Paging)  
+**Output(ept=0 : Shadow Paging)**  
 ![test script ept 0](https://user-images.githubusercontent.com/24988178/102022090-77e28280-3daa-11eb-9247-4d88cd58617e.png)
 
   
   
-3. What did you learn from the count of exits? Was the count what you expected? If not, why not?  
-Answer:   
+**3. What did you learn from the count of exits? Was the count what you expected? If not, why not?**  
+**Answer:**   
 Total Count of Exits without NO EPT (ept=1): 1323281  
 ![no ept dmesg screen shot](https://user-images.githubusercontent.com/24988178/102023667-33a7b000-3db3-11eb-890e-bf1c82b05aac.png)
 Total Count of Exits with ept=0 : 1462763  
@@ -50,5 +50,5 @@ The count of exits during Nested paging(without ept) was less in comparision to 
 The exit count was increase with ept=0 due to shadow paging. It was expected as per the class lecture and reasearch during final exam.
 
 
-4. What changed between the two runs (ept vs no-ept)?
-Answer: When we run the command with ept=0(in shadow paging), there are more number of exits as compared to the running without ept in nested paging.
+**4. What changed between the two runs (ept vs no-ept)?**
+**Answer:** When we run the command with ept=0(in shadow paging), there are more number of exits as compared to the running without ept in nested paging.
