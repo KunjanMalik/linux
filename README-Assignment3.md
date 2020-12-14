@@ -42,9 +42,9 @@ We checked at Host machine with “dmesg” command
 # Questions
 
 
-1.	For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched.  
-Answer: We worked in a team of 2.  
-Shivam Shrivastav and Kunjan Malik.  
+**1.	For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched.**  
+**Answer: We worked in a team of 2.**  
+**Shivam Shrivastav and Kunjan Malik**  
 We both did the other assignments together and researched together about this assignment as well.  
 Shivam researched about all the exits reasons NOT enabled/handled in SDM.  
 Kunjan researched about all the exits reasons NOT enabled/handled in KVM.  
@@ -55,21 +55,21 @@ We shared the load, where Kunjan worked on the total exits per reason increment 
 After the successful results, we worked on handling concurrent exits in multi-VCPU VM . This was achieved using atomic read and atomic increment functionality. With this, we built the complete solution and tested our output using the above mentioned test script.  
 
 
-2.	Describe in detail the steps you used to complete the assignment. Consider your reader to be someone skilled in software development but otherwise unfamiliar with the assignment. Good answers to this question will be recipes that someone can follow to reproduce your development steps.  
-Answer: The basic steps and pre-requisite is same as assignment 2 (https://github.com/KunjanMalik/linux/blob/master/README.md ).  
+**2.	Describe in detail the steps you used to complete the assignment. Consider your reader to be someone skilled in software development but otherwise unfamiliar with the assignment. Good answers to this question will be recipes that someone can follow to reproduce your development steps.**  
+**Answer:** The basic steps and pre-requisite is same as assignment 2 (https://github.com/KunjanMalik/linux/blob/master/README.md ).  
 For our code changes needed for assignment 3, you can refer the following files:  
 ~linux/arch/x86/kvm/cupid.c   
 ~linux/arch/x86/kvm/vmx/vmx.c  
 To run the entre setup, please follow above steps assignment 2 readme and next steps as mentioned above. After this execute the below test script code mentioned in test script section and follow the all the required steps.   
 
-3.	Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? Approximately how many exits does a full VM boot entail?  
-Answer: Exits seems to increase but it does not seem to be increasing at a stable rate. When we run a variety of VM instructions in our inner VM, say unauthorized file access, playing video on the VM or internet or running cupid in guest VM or other VM operations, more number of VM exits occur due to Page Fault, exceptions etc accordingly.
+**3.Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? Approximately how many exits does a full VM boot entail?**
+**Answer:** Exits seems to increase but it does not seem to be increasing at a stable rate. When we run a variety of VM instructions in our inner VM, say unauthorized file access, playing video on the VM or internet or running cupid in guest VM or other VM operations, more number of VM exits occur due to Page Fault, exceptions etc accordingly.
 In our setup, approximately, 1323281 exits occured after VM boot.   
 
 
-4. Of the exit types defined in the SDM, which are the most frequent? Least?
+**4. Of the exit types defined in the SDM, which are the most frequent? Least?**
 
-Answer: There are many exits increasing where 48 is the most frequent exit reason. Even 10 and 30 are the second most frequent exit. Many of the exits have count as 0 like: Exit Reason 2, 3, 63, 64 and 67 etc, so theyare the ones with least number. 
+**Answer:** There are many exits increasing where 48 is the most frequent exit reason. Even 10 and 30 are the second most frequent exit. Many of the exits have count as 0 like: Exit Reason 2, 3, 63, 64 and 67 etc, so they are the ones with least number. 
 
 
 
