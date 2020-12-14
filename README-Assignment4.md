@@ -50,5 +50,5 @@ The count of exits during Nested paging(without ept) was less in comparision to 
 The exit count was increase with ept=0 due to shadow paging. It was expected as per the class lecture and reasearch during final exam.
 
 
-4. What changed between the two runs (ept vs no-ept)?  
+4. What changed between the two runs (ept vs no-ept)?
 Answer: When we run the command with ept=0(in shadow paging), there are more number of exits as compared to the running without ept in nested paging.
