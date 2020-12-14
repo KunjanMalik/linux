@@ -44,6 +44,7 @@ Output without ept (default ept=1 nested paging) was taken by Kunjan and output 
 **Answer:**   
 Total Count of Exits without NO EPT (ept=1): 1323281  
 ![no ept dmesg screen shot](https://user-images.githubusercontent.com/24988178/102023667-33a7b000-3db3-11eb-890e-bf1c82b05aac.png)
+
 Total Count of Exits with ept=0 : 1462763  
 ![ept 0 dmesg](https://user-images.githubusercontent.com/24988178/102021989-d65b3100-3da9-11eb-99ee-6735f4fe77f0.png)  
 
