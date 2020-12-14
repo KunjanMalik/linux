@@ -23,7 +23,10 @@ Output is shown below in questions.
 
 **1. For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented / researched. (You may skip this question if you are doing the lab by yourself).**  
 **Answer:** We worked in a team of 2
+
 **Shivam Shrivastav and Kunjan Malik**
+
+
 We both did the other assignments together and researched together about this assignment as well.  
 Since there was no code changes involved, we mostly did this assignment together over zoom call.
 Output without ept (default ept=1 nested paging) was taken by Kunjan and output for ept=0(shadow paging) for taken by Shivam).  
